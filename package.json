@@ -1,14 +1,14 @@
 {
   "name": "font-converter-preview",
   "version": "1.0.0",
-  "description": "Converts OTF fonts to WOFF/WOFF2 and generates an HTML preview.",
+  "description": "Converts OTF fonts to WOFF2 and generates an HTML preview.",
   "main": "app/generate_preview.js",
   "type": "module",
   "scripts": {
-    "build": "node ./app/convert_fonts.js",
-    "preview": "node ./app/generate_preview.js",
+    "convert": "node ./app/convert_fonts.js",
+    "build": "node ./app/generate_preview.js",
     "serve": "node ./app/server.js",
-    "start": "npm run build && npm run preview && npm run serve"
+    "start": "npm run convert && npm run build && npm run serve"
   },
   "keywords": [
     "font",
