@@ -1,5 +1,5 @@
 {
-  "name": "font-converter-preview",
+  "name": "web-font-conversion-preview",
   "version": "1.0.0",
   "description": "Converts OTF/TTF fonts to WOFF2 format and generates an HTML preview with Tailwind CSS.",
   "main": "app/generate_preview.js",
@@ -8,8 +8,7 @@
     "build": "node ./app/convert_fonts.js",
     "preview": "node ./app/generate_preview.js",
     "serve": "node ./app/server.js",
-    "start": "npm run build && npm run preview && npm run serve",
-    "test-spinner": "node ./app/test-spinner.js"
+    "start": "npm run build && npm run preview && npm run serve"
   },
   "keywords": [
     "font",
