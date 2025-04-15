@@ -1,22 +1,23 @@
 {
   "name": "font-converter-preview",
   "version": "1.0.0",
-  "description": "Converts OTF fonts to WOFF2 and generates an HTML preview.",
+  "description": "Converts OTF/TTF fonts to WOFF2 format and generates an HTML preview with Tailwind CSS.",
   "main": "app/generate_preview.js",
   "type": "module",
   "scripts": {
-    "convert": "node ./app/convert_fonts.js",
-    "build": "node ./app/generate_preview.js",
+    "build": "node ./app/convert_fonts.js",
+    "preview": "node ./app/generate_preview.js",
     "serve": "node ./app/server.js",
-    "start": "npm run convert && npm run build && npm run serve"
+    "start": "npm run build && npm run preview && npm run serve"
   },
   "keywords": [
     "font",
-    "woff",
     "woff2",
     "otf",
+    "ttf",
     "preview",
-    "converter"
+    "converter",
+    "tailwindcss"
   ],
   "author": "",
   "license": "ISC",
