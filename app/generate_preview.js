@@ -1,8 +1,10 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const outputDir = path.join(__dirname, 'output');
-const previewDir = path.join(__dirname, 'preview');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const outputDir = path.join(__dirname, '..', 'output');
+const previewDir = path.join(__dirname, '..', 'preview');
 const cssFilePath = path.join(previewDir, 'fonts.css');
 const htmlFilePath = path.join(previewDir, 'index.html');
 
@@ -91,8 +93,8 @@ let fontFiles = [];
 try {
   fontFiles = fs
     .readdirSync(outputDir)
-    .filter((file) => /\.(woff|woff2)$/i.test(file));
-  console.log(`Found ${fontFiles.length} font files in ${outputDir}`);
+    .filter((file) => /\.woff2$/i.test(file));
+  console.log(`Found ${fontFiles.length} WOFF2 font files in ${outputDir}`);
 } catch (err) {
   console.error(
     `Error reading output directory '${outputDir}': ${err.message}`
@@ -102,26 +104,22 @@ try {
 }
 
 if (fontFiles.length === 0) {
-  console.log(
-    `No .woff or .woff2 files found in '${outputDir}'. Nothing to preview.`
-  );
+  console.log(`No WOFF2 files found in '${outputDir}'. Nothing to preview.`);
   process.exit(0);
 }
 
-// 3. Parse font names and group by base name (to handle woff and woff2)
+// 3. Parse font names
 const fonts = {};
 fontFiles.forEach((file) => {
   const parsed = parseFontName(file);
-  if (!fonts[parsed.baseName]) {
-    fonts[parsed.baseName] = { ...parsed, formats: [] };
-  }
-  const format = path.extname(file).substring(1); // 'woff' or 'woff2'
-  fonts[parsed.baseName].formats.push({
-    url: path
-      .relative(previewDir, path.join(outputDir, file))
-      .replace(/\\/g, '/'), // Relative path for CSS
-    format: format === 'woff2' ? 'woff2' : 'woff', // CSS format string
-  });
+  const fontUrl = path
+    .relative(previewDir, path.join(outputDir, file))
+    .replace(/\\/g, '/'); // Relative path for CSS
+
+  fonts[parsed.baseName] = {
+    ...parsed,
+    url: fontUrl,
+  };
 });
 
 // 4. Generate CSS content
@@ -130,16 +128,11 @@ let htmlBodyContent = `<h1>Font Preview</h1>\n<p>Generated from files in the '/o
 const generatedFamilies = {}; // Keep track of families for HTML generation
 
 Object.values(fonts).forEach((font) => {
-  const sources = font.formats
-    .sort((a, b) => (a.format === 'woff2' ? -1 : 1)) // Prioritize woff2
-    .map((f) => `url('${f.url}') format('${f.format}')`)
-    .join(',\n       ');
-
   cssContent += `@font-face {\n`;
   cssContent += `  font-family: '${font.family}';\n`;
   cssContent += `  font-style: ${font.style};\n`;
   cssContent += `  font-weight: ${font.weightNum};\n`;
-  cssContent += `  src: ${sources};\n`;
+  cssContent += `  src: url('${font.url}') format('woff2');\n`;
   cssContent += `  font-display: swap;\n`;
   cssContent += `}\n\n`;
 
@@ -167,9 +160,7 @@ Object.values(fonts).forEach((font) => {
   htmlBodyContent += `    <p class="${cssClass}" style="font-size: 12px;">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz</p>\n`;
   htmlBodyContent += `    <p class="font-details">Weight: ${font.weightNum} (${
     font.weight
-  }), Style: ${font.style}, Files: ${font.formats
-    .map((f) => path.basename(f.url))
-    .join(', ')}</p>\n`;
+  }), Style: ${font.style}, File: ${path.basename(font.url)}</p>\n`;
   htmlBodyContent += `  </div>\n`;
 });
 
