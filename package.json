@@ -1,5 +1,5 @@
 {
-  "name": "web-font-conversion-preview",
+  "name": "web-font-conversion",
   "version": "1.0.0",
   "description": "Converts OTF/TTF fonts to WOFF2 format and generates an HTML preview with Tailwind CSS.",
   "main": "app/generate_preview.js",
