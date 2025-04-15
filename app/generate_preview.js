@@ -124,25 +124,17 @@ try {
 
   if (fontFiles.length === 0) {
     console.log(`
-╭──────────────────────────────────────────╮
-│                                          │
-│    No WOFF2 fonts found in output dir    │
-│                                          │
-│    Run 'npm run build' first             │
-│                                          │
-╰──────────────────────────────────────────╯
+❌ No WOFF2 fonts found in output dir
+
+🔄 Run 'npm run build' first
     `);
     process.exit(0);
   }
 } catch (err) {
   console.error(`
-╭──────────────────────────────────────────╮
-│                                          │
-│    Error reading output directory        │
-│                                          │
-│    Run 'npm run build' first             │
-│                                          │
-╰──────────────────────────────────────────╯
+❌ Error reading output directory
+
+🔄 Run 'npm run build' first
   `);
   process.exit(1);
 }
@@ -340,12 +332,8 @@ const htmlContent = `<!DOCTYPE html>
 fs.writeFileSync(htmlFilePath, htmlContent);
 
 console.log(`
-╭──────────────────────────────────────────╮
-│                                          │
-│    Font Preview Generated                │
-│                                          │
-│    📋 ${familyCount} Font Families           │
-│    🔤 ${weightCount} Font Variations          │
-│                                          │
-╰──────────────────────────────────────────╯
+✨ Font Preview Generated ✨
+
+📋 ${familyCount} Font Families
+🔤 ${weightCount} Font Variations
 `);

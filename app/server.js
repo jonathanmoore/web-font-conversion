@@ -18,7 +18,7 @@ const app = new Hono();
 
 // Add middleware to log requests (only for font files to minimize noise)
 app.use('/output/*', async (c, next) => {
-  console.log(`Loading font: ${c.req.path.split('/').pop()}`);
+  console.log(`📦 Loading font: ${c.req.path.split('/').pop()}`);
   await next();
 });
 
@@ -76,15 +76,11 @@ app.onError((err, c) => {
 // Start the server
 const port = 3000;
 console.log(`
-╭──────────────────────────────────────────╮
-│                                          │
-│    Font Preview Server                   │
-│                                          │
-│    🔍 http://localhost:${port}              │
-│                                          │
-│    Press Ctrl+C to stop                  │
-│                                          │
-╰──────────────────────────────────────────╯
+✨ Font Preview Server ✨
+
+🔍 http://localhost:${port}
+
+Press Ctrl+C to stop
 `);
 
 serve({
